@@ -1,5 +1,5 @@
 [build]
-  command = "./netlify-build.sh"
+  command = "./netlify-build-simple.sh"
   publish = "netlify-dist"
 
 [build.environment]
@@ -10,68 +10,17 @@
   NETLIFY_USE_YARN = "false"
   NETLIFY_USE_NPM = "false"
 
-# Handle Next.js routing with internationalization
-# Priority order for redirects matters!
+# Simple static site configuration for now
+# All files will be served directly
 
-# 1. Static assets first (highest priority)
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/static/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/static/*"
-  to = "/static/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/favicon.ico"
-  to = "/favicon.ico"
-  status = 200
-
-[[redirects]]
-  from = "/logo.svg"
-  to = "/logo.svg"
-  status = 200
-
-# 2. API routes
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-[[redirects]]
-  from = "/_next/data/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-# 3. Serve test page (temporarily for debugging)
-[[redirects]]
-  from = "/"
-  to = "/index.html"
-  status = 200
-
-# 4. All other requests to Next.js server (lowest priority)
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-# Handle static files
+# Static assets
 [[headers]]
-  for = "/_next/static/*"
+  for = "/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/static/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000"
-
-# Functions configuration
-[functions]
-  node_bundler = "esbuild"
-  directory = "functions"
+    Cache-Control = "public, max-age=3600"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
 
 [dev]
   command = "cd saasfly && bun run dev"

@@ -1,3 +1,59 @@
+#!/bin/bash
+set -e  # Exit on any error
+
+echo "🚀 Starting Netlify build process..."
+echo "Current directory: $(pwd)"
+echo "Contents: $(ls -la)"
+
+# Install Bun if not available
+if ! command -v bun &> /dev/null; then
+    echo "Installing Bun..."
+    curl -fsSL https://bun.sh/install | bash
+    export PATH="$HOME/.bun/bin:$PATH"
+fi
+
+# Install dependencies
+echo "Installing dependencies..."
+cd saasfly
+echo "Changed to saasfly directory: $(pwd)"
+bun install
+
+# Build the project
+echo "Building project..."
+bun run build || {
+    echo "❌ Build failed!"
+    exit 1
+}
+
+# Go back to root directory
+cd ..
+echo "Back to root directory: $(pwd)"
+
+# Create netlify-dist directory
+echo "Creating netlify-dist directory..."
+mkdir -p netlify-dist
+
+# Copy static assets
+echo "Copying static assets..."
+if [ -d "saasfly/apps/nextjs/.next/static" ]; then
+    cp -r saasfly/apps/nextjs/.next/static netlify-dist/
+    echo "Copied static directory"
+else
+    echo "Warning: static directory not found"
+fi
+
+# Copy public files
+echo "Copying public files..."
+if [ -d "saasfly/apps/nextjs/public" ]; then
+    cp -r saasfly/apps/nextjs/public netlify-dist/
+    echo "Copied public directory"
+else
+    echo "Warning: public directory not found"
+fi
+
+# Create a simple index.html for now
+echo "Creating basic index.html..."
+cat > netlify-dist/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,3 +179,8 @@
     </div>
 </body>
 </html>
+EOF
+
+echo "✅ Build completed successfully!"
+echo "📁 Final build output located at: $(pwd)/netlify-dist"
+echo "🔍 Static files available: $(ls -la netlify-dist/ | wc -l) items"

@@ -7,8 +7,7 @@ bun.lockb
 out/
 build/
 
-# Netlify build output
-netlify-dist/
+# Note: netlify-dist is now tracked for Netlify deployment
 
 # Environment variables
 .env
