@@ -81,68 +81,8 @@ else
     exit 1
 fi
 
-# Copy locale-specific static pages
-echo "Copying locale-specific static pages..."
-LOCALE_DIR="saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app"
-
-if [ -d "$LOCALE_DIR/en" ]; then
-  echo "Copying English locale pages..."
-  mkdir -p netlify-dist/en
-  cp -r "$LOCALE_DIR/en"/* netlify-dist/en/
-else
-  echo "Warning: English locale directory not found"
-fi
-
-if [ -d "$LOCALE_DIR/zh" ]; then
-  echo "Copying Chinese locale pages..."
-  mkdir -p netlify-dist/zh
-  cp -r "$LOCALE_DIR/zh"/* netlify-dist/zh/
-else
-  echo "Warning: Chinese locale directory not found"
-fi
-
-if [ -d "$LOCALE_DIR/ko" ]; then
-  echo "Copying Korean locale pages..."
-  mkdir -p netlify-dist/ko
-  cp -r "$LOCALE_DIR/ko"/* netlify-dist/ko/
-else
-  echo "Warning: Korean locale directory not found"
-fi
-
-if [ -d "$LOCALE_DIR/ja" ]; then
-  echo "Copying Japanese locale pages..."
-  mkdir -p netlify-dist/ja
-  cp -r "$LOCALE_DIR/ja"/* netlify-dist/ja/
-else
-  echo "Warning: Japanese locale directory not found"
-fi
-
-# Create root index files for each locale
-echo "Creating root index files..."
-for locale in en zh ko ja; do
-  if [ -d "netlify-dist/$locale" ]; then
-    # Copy the locale's page to root for direct access
-    cp -r netlify-dist/$locale/* netlify-dist/ 2>/dev/null || true
-  fi
-done
-
-# Copy main index.html to root directory
-echo "Copying main index.html to root directory..."
-if [ -f "netlify-dist/server/app/index.html" ]; then
-    cp netlify-dist/server/app/index.html netlify-dist/
-    echo "Main index.html copied to root"
-else
-    echo "Warning: Main index.html not found"
-fi
-
-# Create locale-specific HTML files for Netlify routing
-echo "Creating locale-specific HTML files..."
-for locale in en zh ko ja; do
-    if [ -f "netlify-dist/server/app/index.html" ]; then
-        cp netlify-dist/server/app/index.html "netlify-dist/$locale.html"
-        echo "Created $locale.html"
-    fi
-done
+# Note: Static HTML files are not needed in standalone mode
+# All pages are served through the Next.js server function
 
 # Copy server.js to Netlify functions directory
 echo "Setting up Netlify Functions..."

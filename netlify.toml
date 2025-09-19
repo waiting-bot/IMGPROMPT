@@ -19,71 +19,37 @@
   to = "/.netlify/functions/server"
   status = 200
 
-# 2. Handle Next.js static files directly (using rewrites)
+# 2. Handle Next.js static files
 [[redirects]]
   from = "/_next/static/*"
   to = "/static/:splat"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/_next/data/*"
   to = "/.netlify/functions/server"
   status = 200
 
-# Remove the redundant static redirect as it's handled above
-
-# 3. Handle locale-based routes (en, zh, ko, ja)
-[[redirects]]
-  from = "/en"
-  to = "/en.html"
-  status = 200
-
-[[redirects]]
-  from = "/en/*"
-  to = "/en.html"
-  status = 200
-
-[[redirects]]
-  from = "/zh"
-  to = "/zh.html"
-  status = 200
-
-[[redirects]]
-  from = "/zh/*"
-  to = "/zh.html"
-  status = 200
-
-[[redirects]]
-  from = "/ko"
-  to = "/ko.html"
-  status = 200
-
-[[redirects]]
-  from = "/ko/*"
-  to = "/ko.html"
-  status = 200
-
-[[redirects]]
-  from = "/ja"
-  to = "/ja.html"
-  status = 200
-
-[[redirects]]
-  from = "/ja/*"
-  to = "/ja.html"
-  status = 200
-
-# 4. Handle root locale redirects (default to zh)
-[[redirects]]
-  from = "/"
-  to = "/zh.html"
-  status = 301
-
-# 5. Fallback for any other routes - serve static files
+# 3. Handle all page requests through Next.js server (for standalone mode)
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/.netlify/functions/server"
+  status = 200
+
+# 4. Special handling for static assets
+[[redirects]]
+  from = "/static/*"
+  to = "/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 200
+
+[[redirects]]
+  from = "/logo.svg"
+  to = "/logo.svg"
   status = 200
 
 # Handle static files
