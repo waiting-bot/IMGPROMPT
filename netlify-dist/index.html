@@ -39,36 +39,6 @@
             opacity: 0.9;
         }
         
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-desc {
-            opacity: 0.8;
-            line-height: 1.5;
-        }
-        
         .status {
             background: rgba(76, 175, 80, 0.2);
             border: 2px solid #4CAF50;
@@ -77,49 +47,49 @@
             margin-bottom: 2rem;
         }
         
-        .build-info {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
+        .loading {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="status">
-            ✅ Netlify Deployment Successful
+            ✅ Next.js Application Loading
         </div>
         
         <h1>IMG PROMPT</h1>
         <p class="subtitle">AI-Powered SaaS Platform</p>
         
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">🖼️</div>
-                <div class="feature-title">Image Upload</div>
-                <div class="feature-desc">Upload and process images with AI</div>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🤖</div>
-                <div class="feature-title">AI Generation</div>
-                <div class="feature-desc">Generate intelligent prompts and content</div>
-            </div>
-            
-            <div class="feature">
-                <div class="feature-icon">🌐</div>
-                <div class="feature-title">Multi-Language</div>
-                <div class="feature-desc">Support for multiple languages</div>
-            </div>
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading Next.js application...</p>
         </div>
     </div>
     
-    <div class="build-info">
-        Build: $(date) | Next.js Standalone Mode
-    </div>
+    <script>
+        // Redirect to actual Next.js app after a short delay
+        setTimeout(() => {
+            window.location.href = '/zh';
+        }, 2000);
+    </script>
 </body>
 </html>

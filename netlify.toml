@@ -1,5 +1,5 @@
 [build]
-  command = "./netlify-build-simple.sh"
+  command = "./netlify-build-nextjs.sh"
   publish = "netlify-dist"
 
 [build.environment]
@@ -10,8 +10,84 @@
   NETLIFY_USE_YARN = "false"
   NETLIFY_USE_NPM = "false"
 
-# Simple static site configuration for now
-# All files will be served directly
+# Next.js static routing configuration
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/.next/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/_next/data/*"
+  to = "/.next/data/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/api/:splat"
+  status = 200
+
+# Handle locale routing - redirect to HTML files
+[[redirects]]
+  from = "/zh"
+  to = "/zh/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/*"
+  to = "/zh/:splat.html"
+  status = 200
+
+[[redirects]]
+  from = "/en"
+  to = "/en/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/en/*"
+  to = "/en/:splat.html"
+  status = 200
+
+[[redirects]]
+  from = "/ko"
+  to = "/ko/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/ko/*"
+  to = "/ko/:splat.html"
+  status = 200
+
+[[redirects]]
+  from = "/ja"
+  to = "/ja/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/ja/*"
+  to = "/ja/:splat.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat.html"
+  status = 200
+
+# Root redirect
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# Catch all for dynamic routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Static assets
 [[headers]]
