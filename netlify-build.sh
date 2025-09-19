@@ -55,37 +55,66 @@ ls -la saasfly/apps/nextjs/.next/
 # Copy static assets
 echo "Copying static assets..."
 cp -r saasfly/apps/nextjs/.next/static netlify-dist/
-cp -r saasfly/apps/nextjs/public netlify-dist/
+
+# Copy public files (check if directory exists)
+echo "Copying public files..."
+if [ -d "saasfly/apps/nextjs/public" ]; then
+    echo "Found public directory, copying..."
+    cp -r saasfly/apps/nextjs/public netlify-dist/
+else
+    echo "Warning: public directory not found, skipping..."
+fi
 
 # Copy server files for standalone mode
 echo "Copying server files..."
-cp saasfly/apps/nextjs/.next/standalone/apps/nextjs/server.js netlify-dist/
-cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server netlify-dist/
+if [ -f "saasfly/apps/nextjs/.next/standalone/apps/nextjs/server.js" ]; then
+    cp saasfly/apps/nextjs/.next/standalone/apps/nextjs/server.js netlify-dist/
+else
+    echo "Error: server.js not found in standalone output!"
+    exit 1
+fi
+
+if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server" ]; then
+    cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server netlify-dist/
+else
+    echo "Error: server directory not found in standalone output!"
+    exit 1
+fi
 
 # Copy locale-specific static pages
 echo "Copying locale-specific static pages..."
-if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en" ]; then
+LOCALE_DIR="saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app"
+
+if [ -d "$LOCALE_DIR/en" ]; then
   echo "Copying English locale pages..."
   mkdir -p netlify-dist/en
-  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en/* netlify-dist/en/
+  cp -r "$LOCALE_DIR/en"/* netlify-dist/en/
+else
+  echo "Warning: English locale directory not found"
 fi
 
-if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh" ]; then
+if [ -d "$LOCALE_DIR/zh" ]; then
   echo "Copying Chinese locale pages..."
   mkdir -p netlify-dist/zh
-  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh/* netlify-dist/zh/
+  cp -r "$LOCALE_DIR/zh"/* netlify-dist/zh/
+else
+  echo "Warning: Chinese locale directory not found"
 fi
 
-if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko" ]; then
+if [ -d "$LOCALE_DIR/ko" ]; then
   echo "Copying Korean locale pages..."
   mkdir -p netlify-dist/ko
-  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko/* netlify-dist/ko/
+  cp -r "$LOCALE_DIR/ko"/* netlify-dist/ko/
+else
+  echo "Warning: Korean locale directory not found"
 fi
 
-if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja" ]; then
+if [ -d "$LOCALE_DIR/ja" ]; then
   echo "Copying Japanese locale pages..."
   mkdir -p netlify-dist/ja
-  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja/* netlify-dist/ja/
+  cp -r "$LOCALE_DIR/ja"/* netlify-dist/ja/
+else
+  echo "Warning: Japanese locale directory not found"
 fi
 
 # Create root index files for each locale
