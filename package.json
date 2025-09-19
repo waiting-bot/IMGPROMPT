@@ -1,0 +1,24 @@
+{
+  "name": "img-prompt-netlify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IMG PROMPT - AI SaaS Platform Netlify Deployment",
+  "scripts": {
+    "build": "./netlify-build-nextjs.sh",
+    "clean": "rm -rf netlify-dist functions"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "next-auth": "^4.24.7"
+  },
+  "devDependencies": {
+    "@types/node": "20.12.12",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
