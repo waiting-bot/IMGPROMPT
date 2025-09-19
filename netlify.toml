@@ -45,7 +45,13 @@
   to = "/.netlify/functions/server"
   status = 200
 
-# 3. All other requests to Next.js server (lowest priority)
+# 3. Serve test page (temporarily for debugging)
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+# 4. All other requests to Next.js server (lowest priority)
 [[redirects]]
   from = "/*"
   to = "/.netlify/functions/server"
