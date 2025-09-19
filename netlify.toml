@@ -32,29 +32,49 @@
 
 # 3. Handle locale-based routes (en, zh, ko, ja)
 [[redirects]]
+  from = "/en"
+  to = "/en.html"
+  status = 200
+
+[[redirects]]
   from = "/en/*"
-  to = "/en/index.html"
+  to = "/en.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh"
+  to = "/zh.html"
   status = 200
 
 [[redirects]]
   from = "/zh/*"
-  to = "/zh/index.html"
+  to = "/zh.html"
+  status = 200
+
+[[redirects]]
+  from = "/ko"
+  to = "/ko.html"
   status = 200
 
 [[redirects]]
   from = "/ko/*"
-  to = "/ko/index.html"
+  to = "/ko.html"
+  status = 200
+
+[[redirects]]
+  from = "/ja"
+  to = "/ja.html"
   status = 200
 
 [[redirects]]
   from = "/ja/*"
-  to = "/ja/index.html"
+  to = "/ja.html"
   status = 200
 
 # 4. Handle root locale redirects (default to zh)
 [[redirects]]
   from = "/"
-  to = "/zh/"
+  to = "/zh.html"
   status = 301
 
 # 5. Fallback for any other routes - serve static files

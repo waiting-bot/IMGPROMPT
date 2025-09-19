@@ -126,6 +126,24 @@ for locale in en zh ko ja; do
   fi
 done
 
+# Copy main index.html to root directory
+echo "Copying main index.html to root directory..."
+if [ -f "netlify-dist/server/app/index.html" ]; then
+    cp netlify-dist/server/app/index.html netlify-dist/
+    echo "Main index.html copied to root"
+else
+    echo "Warning: Main index.html not found"
+fi
+
+# Create locale-specific HTML files for Netlify routing
+echo "Creating locale-specific HTML files..."
+for locale in en zh ko ja; do
+    if [ -f "netlify-dist/server/app/index.html" ]; then
+        cp netlify-dist/server/app/index.html "netlify-dist/$locale.html"
+        echo "Created $locale.html"
+    fi
+done
+
 # Verify no problematic files in output
 echo "Verifying output files..."
 find netlify-dist -name "*" | grep -E "[#?]" | while read file; do
