@@ -1,7 +1,6 @@
 [build]
   command = "./netlify-build-nextjs.sh"
   publish = "netlify-dist"
-  functions = "functions"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -22,12 +21,12 @@
 
 [[redirects]]
   from = "/_next/data/*"
-  to = "/.netlify/functions/server"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/server"
+  to = "/index.html"
   status = 200
 
 # Handle locale routing - redirect to HTML files
