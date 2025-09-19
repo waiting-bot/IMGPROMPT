@@ -1,9 +1,12 @@
 #!/bin/bash
+set -e  # Exit on any error
 
 # Netlify Build Script for Saasfly Project
 # This script handles the build process for Netlify deployment
 
 echo "🚀 Starting Netlify build process..."
+echo "Current directory: $(pwd)"
+echo "Contents: $(ls -la)"
 
 # Install Bun if not available
 if ! command -v bun &> /dev/null; then
@@ -21,47 +24,68 @@ done
 
 # Install dependencies
 echo "Installing dependencies..."
-cd saasfly && bun install
+cd saasfly
+echo "Changed to saasfly directory: $(pwd)"
+echo "Contents: $(ls -la)"
+bun install
 
 # Build the project
 echo "Building project..."
-bun run build
+bun run build || {
+    echo "❌ Build failed!"
+    exit 1
+}
 
 # Copy standalone output to Netlify publish directory
 echo "Preparing build output..."
+cd ..
+echo "Back to root directory: $(pwd)"
 mkdir -p netlify-dist
 
+# Check if build output exists
+echo "Checking build output..."
+if [ ! -d "saasfly/apps/nextjs/.next" ]; then
+    echo "❌ Build output directory does not exist!"
+    exit 1
+fi
+
+echo "Build output contents:"
+ls -la saasfly/apps/nextjs/.next/
+
 # Copy static assets
-cp -r apps/nextjs/.next/static netlify-dist/
-cp -r apps/nextjs/public netlify-dist/
+echo "Copying static assets..."
+cp -r saasfly/apps/nextjs/.next/static netlify-dist/
+cp -r saasfly/apps/nextjs/public netlify-dist/
 
 # Copy server files for standalone mode
-cp apps/nextjs/.next/standalone/apps/nextjs/server.js netlify-dist/
-cp -r apps/nextjs/.next/standalone/apps/nextjs/.next/server netlify-dist/
+echo "Copying server files..."
+cp saasfly/apps/nextjs/.next/standalone/apps/nextjs/server.js netlify-dist/
+cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server netlify-dist/
 
 # Copy locale-specific static pages
-if [ -d "apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en" ]; then
+echo "Copying locale-specific static pages..."
+if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en" ]; then
   echo "Copying English locale pages..."
   mkdir -p netlify-dist/en
-  cp -r apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en/* netlify-dist/en/
+  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/en/* netlify-dist/en/
 fi
 
-if [ -d "apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh" ]; then
+if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh" ]; then
   echo "Copying Chinese locale pages..."
   mkdir -p netlify-dist/zh
-  cp -r apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh/* netlify-dist/zh/
+  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/zh/* netlify-dist/zh/
 fi
 
-if [ -d "apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko" ]; then
+if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko" ]; then
   echo "Copying Korean locale pages..."
   mkdir -p netlify-dist/ko
-  cp -r apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko/* netlify-dist/ko/
+  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ko/* netlify-dist/ko/
 fi
 
-if [ -d "apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja" ]; then
+if [ -d "saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja" ]; then
   echo "Copying Japanese locale pages..."
   mkdir -p netlify-dist/ja
-  cp -r apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja/* netlify-dist/ja/
+  cp -r saasfly/apps/nextjs/.next/standalone/apps/nextjs/.next/server/app/ja/* netlify-dist/ja/
 fi
 
 # Create root index files for each locale
@@ -84,4 +108,11 @@ done
 echo "Build output contents:"
 ls -la netlify-dist/
 
+# Verify netlify-dist directory exists
+if [ ! -d "netlify-dist" ]; then
+    echo "❌ netlify-dist directory was not created!"
+    exit 1
+fi
+
 echo "✅ Build completed successfully!"
+echo "📁 Final build output located at: $(pwd)/netlify-dist"
