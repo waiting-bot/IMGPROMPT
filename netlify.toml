@@ -13,30 +13,12 @@
 # Handle Next.js routing with internationalization
 # Priority order for redirects matters!
 
-# 1. API routes first
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-# 2. Handle Next.js static files
+# 1. Static assets first (highest priority)
 [[redirects]]
   from = "/_next/static/*"
   to = "/static/:splat"
   status = 200
 
-[[redirects]]
-  from = "/_next/data/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-# 3. Handle all page requests through Next.js server (for standalone mode)
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
-# 4. Special handling for static assets
 [[redirects]]
   from = "/static/*"
   to = "/static/:splat"
@@ -50,6 +32,23 @@
 [[redirects]]
   from = "/logo.svg"
   to = "/logo.svg"
+  status = 200
+
+# 2. API routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/_next/data/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+# 3. All other requests to Next.js server (lowest priority)
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server"
   status = 200
 
 # Handle static files

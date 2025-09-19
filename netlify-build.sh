@@ -65,6 +65,10 @@ else
     echo "Warning: public directory not found, skipping..."
 fi
 
+# Clean up old HTML files that may interfere with server routing
+echo "Cleaning up old HTML files..."
+rm -f netlify-dist/index.html netlify-dist/en.html netlify-dist/zh.html netlify-dist/ja.html netlify-dist/ko.html 2>/dev/null || true
+
 # Copy server files for standalone mode
 echo "Copying server files..."
 if [ -f "saasfly/apps/nextjs/.next/standalone/apps/nextjs/server.js" ]; then
