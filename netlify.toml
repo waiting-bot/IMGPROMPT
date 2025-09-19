@@ -19,21 +19,19 @@
   to = "/.netlify/functions/server"
   status = 200
 
-# 2. Handle Next.js dynamic routes through server function
+# 2. Handle Next.js static files directly (using rewrites)
 [[redirects]]
   from = "/_next/static/*"
-  to = "/.netlify/functions/server"
+  to = "/static/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/_next/data/*"
   to = "/.netlify/functions/server"
   status = 200
 
-[[redirects]]
-  from = "/static/*"
-  to = "/.netlify/functions/server"
-  status = 200
+# Remove the redundant static redirect as it's handled above
 
 # 3. Handle locale-based routes (en, zh, ko, ja)
 [[redirects]]
