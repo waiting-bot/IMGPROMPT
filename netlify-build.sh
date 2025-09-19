@@ -144,6 +144,17 @@ for locale in en zh ko ja; do
     fi
 done
 
+# Copy server.js to Netlify functions directory
+echo "Setting up Netlify Functions..."
+mkdir -p netlify-dist/functions
+if [ -f "netlify-dist/server.js" ]; then
+    cp netlify-dist/server.js netlify-dist/functions/server.js
+    echo "Server function copied to Netlify functions directory"
+else
+    echo "Error: server.js not found!"
+    exit 1
+fi
+
 # Verify no problematic files in output
 echo "Verifying output files..."
 find netlify-dist -name "*" | grep -E "[#?]" | while read file; do
@@ -161,5 +172,12 @@ if [ ! -d "netlify-dist" ]; then
     exit 1
 fi
 
+# Verify functions directory exists
+if [ ! -d "netlify-dist/functions" ]; then
+    echo "❌ functions directory was not created!"
+    exit 1
+fi
+
 echo "✅ Build completed successfully!"
 echo "📁 Final build output located at: $(pwd)/netlify-dist"
+echo "🔧 Netlify Functions configured in: $(pwd)/netlify-dist/functions"
