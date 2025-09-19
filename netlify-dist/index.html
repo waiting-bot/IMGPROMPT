@@ -24,7 +24,9 @@
         .container {
             text-align: center;
             padding: 2rem;
-            max-width: 600px;
+            padding-top: 4rem;
+            max-width: 1200px;
+            width: 100%;
         }
         
         h1 {
@@ -45,6 +47,77 @@
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 2rem;
+        }
+        
+        .models-section {
+            margin: 3rem 0;
+        }
+        
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .model-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .model-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .model-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .model-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .model-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .auth-section {
+            margin: 3rem 0;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .auth-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .auth-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
         
         .loading {
@@ -78,6 +151,39 @@
         
         <h1>IMG PROMPT</h1>
         <p class="subtitle">AI-Powered SaaS Platform</p>
+        
+        <div class="models-section">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.9;">AI Models</h2>
+            <div class="models-grid">
+                <div class="model-card">
+                    <div class="model-icon">🧠</div>
+                    <div class="model-name">GPT-4</div>
+                    <div class="model-description">最强大的语言模型</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-icon">✨</div>
+                    <div class="model-name">Claude</div>
+                    <div class="model-description">智能对话助手</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-icon">⚡</div>
+                    <div class="model-name">Gemini</div>
+                    <div class="model-description">多模态AI模型</div>
+                </div>
+                <div class="model-card">
+                    <div class="model-icon">🎨</div>
+                    <div class="model-name">DALL-E</div>
+                    <div class="model-description">图像生成模型</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-section">
+            <div class="auth-buttons">
+                <a href="/login" class="auth-btn">登录</a>
+                <a href="/register" class="auth-btn">注册</a>
+            </div>
+        </div>
         
         <div class="loading">
             <div class="spinner"></div>
