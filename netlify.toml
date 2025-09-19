@@ -1,6 +1,7 @@
 [build]
   command = "./netlify-build-nextjs.sh"
   publish = "netlify-dist"
+  functions = "functions"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -9,21 +10,24 @@
   # Set working directory for build
   NETLIFY_USE_YARN = "false"
   NETLIFY_USE_NPM = "false"
+  # Next.js build settings
+  NEXT_TELEMETRY_DISABLED = "1"
+  SKIP_ENV_VALIDATION = "true"
 
 # Next.js static routing configuration
 [[redirects]]
   from = "/_next/static/*"
-  to = "/.next/static/:splat"
+  to = "/apps/nextjs/.next/static/:splat"
   status = 200
 
 [[redirects]]
   from = "/_next/data/*"
-  to = "/.next/data/:splat"
+  to = "/.netlify/functions/server"
   status = 200
 
 [[redirects]]
   from = "/api/*"
-  to = "/api/:splat"
+  to = "/.netlify/functions/server"
   status = 200
 
 # Handle locale routing - redirect to HTML files
